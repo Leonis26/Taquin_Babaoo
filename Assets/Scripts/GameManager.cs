@@ -39,4 +39,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         RandomTaquinLoad();
     }
+
+    public void Win()
+    {
+        Debug.Log("win");
+        StartCoroutine(WinAnimationAndRestart());
+    }
+
+    IEnumerator WinAnimationAndRestart()
+    {
+        taquinManager.ShowHiddenTile();
+        yield return new WaitForSeconds(2); // do animations / show score here
+        RestartLevel();
+    }
 }

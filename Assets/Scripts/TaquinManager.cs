@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using System.Runtime;
 
 public class TaquinManager : MonoBehaviour
 {
@@ -77,7 +76,6 @@ public class TaquinManager : MonoBehaviour
     /// <summary>
     /// GENERATION
     /// </summary>
-    /// <param name="_taquinSprites"></param>
     void TaquinRandomizer(List<Sprite> _taquinSprites)
     {
         int[,] puzzle = new int[taquinWidth, taquinWidth]; // Value 0 is used for empty space
@@ -122,7 +120,7 @@ public class TaquinManager : MonoBehaviour
         if (_tile.IsRightPlace)
         {
             if (CheckWin())
-                Win();
+                _tile.Win();
         }
     }
 
@@ -142,22 +140,6 @@ public class TaquinManager : MonoBehaviour
         _tile.IsMoving = false;
     }
 
-    bool CheckWin()
-    {
-        foreach(var tile in m_taquinTiles)
-        {
-            if (!tile.IsRightPlace)
-                return false;
-        }
-        return true;
-    }
-    void Win()
-    {
-        Debug.Log("win");
-        GameManager.Instance.RestartLevel();
-    }
-
-
     public Vector2Int GetTileVirtualPosFromIndex(int _index)
     {
         return new Vector2Int(_index % taquinWidth, - _index / taquinWidth);
@@ -168,5 +150,19 @@ public class TaquinManager : MonoBehaviour
         return new Vector2(taquinTileSize * (_virtualPos.x - 1),
             taquinTileSize * (1 +    _virtualPos.y));
     }
+
+    /// <summary>
+    /// LEVEL Managment
+    /// </summary>
+    bool CheckWin()
+    {
+        foreach (var tile in m_taquinTiles)
+        {
+            if (!tile.IsRightPlace)
+                return false;
+        }
+        return true;
+    }
+    public void ShowHiddenTile() => m_taquinTiles[deactivatedTileIndex].enabled = true;
 
 }

@@ -8,14 +8,21 @@ public class TaquinTile : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
 {
     [SerializeField] Image m_visual;
 
+    /// <summary>
+    /// TILE PARAMETERS
+    /// </summary>
     Vector2Int pos;
     public static Vector2Int EmptySpotPos { get; set; } = new Vector2Int();
     Vector2Int neededDir;
     public bool IsMoving { get; set; } = false;
     public int Id { get; private set; }
     public Vector2Int RightPlace { get; private set; }
+
     public bool IsRightPlace => pos == RightPlace;
 
+    /// <summary>
+    /// SETUP
+    /// </summary>
     public void SetTile(int _id, in Sprite _image, Vector2Int _pos)
     {
         Id = _id;
@@ -30,6 +37,10 @@ public class TaquinTile : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
         transform.localPosition = TaquinManager.Instance.GetTileLocalPosFromVirtual(pos);
     }
 
+
+    /// <summary>
+    /// MOVES
+    /// </summary>
     void TryMoveToPos(Vector2Int _toPos)
     {
         if (_toPos != EmptySpotPos)
@@ -60,4 +71,19 @@ public class TaquinTile : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     public void OnDrag(PointerEventData eventData) // necessary to use OnBeginDrag
     {
     }
+
+
+    /// <summary>
+    /// LEVEL END
+    /// </summary>
+
+    public void Win() => StartCoroutine(WaitForTotalMove());
+
+    IEnumerator WaitForTotalMove()
+    {
+        yield return new WaitUntil(() => !IsMoving);
+        GameManager.Instance.Win();
+    }
+
+    public void ShowTile() => m_visual.enabled = true;
 }
