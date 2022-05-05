@@ -12,24 +12,13 @@ namespace TeasingGame
         Home,
         Game,
     }
-public class TeasingGameHomeSceneController : MonoBehaviour
-{
-    public TeasingGameScene SceneForButton;
-    // Start is called before the first frame update
-    void Start()
+    public class TeasingGameHomeSceneController : MonoBehaviour
     {
-        
-    }
+        public TeasingGameScene SceneForButton;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+       public void GoToGameScene()
+       {
+            STSSceneManager.LoadScene(SceneForButton.ToString());
+       }
     }
-
-   public void GoToGameScene()
-    {
-        STSSceneManager.LoadScene(SceneForButton.ToString());
-    }
-}
 }
